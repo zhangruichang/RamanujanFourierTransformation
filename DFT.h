@@ -38,8 +38,8 @@ private:
 
     unsigned int size;
     DATATYPE scale;
-    complex<double> *input_data;
     complex<double> *output_data;
+
 
     void del_all();
     int rev_bits(unsigned int index,int size);
@@ -50,8 +50,9 @@ public:
     DATATYPE pi2;
 
     DFT(int n);
+    void Show();
     ~DFT();
-
+    complex<double> *input_data;
     void resize(int n);
     complex<double>* array_input();
     complex<double>* array_output();

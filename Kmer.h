@@ -19,7 +19,6 @@
 #include<unordered_set>
 #include<unordered_map>
 using namespace std;
-const int maxn = 1e6 + 10;
 typedef long long LL;
 typedef unsigned long long ULL;
 #define fo(i,a,b) for(int i=a;i<=b;i++)

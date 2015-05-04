@@ -130,7 +130,7 @@ double* GetFreqs(string seq, int length)
 		for (int j = 0; j < length; j++) {
 			b[length-1-j]=3-GetIndex(seq[i+j]);
 			index2+=(int)pow(4.0, length-1-j)*b[length-1-j];//TTTT 0 CTTT 1 GTTT 2 ATTT 3
-			//TCGA 01234
+			//TCGA 0123
 		}
 		freqs[index1]++;// coresponding fregs count++
 		freqs[index2]++;
@@ -144,40 +144,40 @@ double* GetFreqs(string seq, int length)
 }
 void PrepareSeq(string inputfile,string outfile,int length)//write k-mer feature to ***.freq files
 {
-		ifstream fin(inputfile);
-		ofstream fout(outfile);
-		fout<<"feature\t";
-		int FeatureNum=(int)pow(4.0, length);
-		for (int i = 0; i < FeatureNum; i++)
-			fout<<GetTetra(i,length)<<"\t\n"[i==(FeatureNum-1)];
-		string title, line, seq;
-		int dimension=(int)pow(4.0,length);
-		double* freqs=new double[dimension];
-		int cnt=0;
-		while(getline(fin, line))
-		{
-			if(line.size()>0 && line[0]=='>')
-			{
-				if(title=="")
-				{
-					title=line;
-					continue;
-				}
-				freqs=GetFreqs(seq,length);
-				fout<<title<<'\n';
-				for (int i = 0; i < dimension; i++)
-					fout<<freqs[i]<<" \n"[i==(dimension-1)];
-				title=line;
-				//seq="";
-			}
-			else
-				seq=line;
-		}
-        freqs=GetFreqs(seq,length);
-        fout<<title<<'\n';
-        for (int i = 0; i < dimension; i++)
-            fout<<freqs[i]<<" \n"[i==(dimension-1)];
-		delete []freqs;
-		fout.close();
-		fin.close();
+    ifstream fin(inputfile);
+    ofstream fout(outfile);
+    //fout<<"feature\t";
+    int FeatureNum=(int)pow(4.0, length);
+    //for (int i = 0; i < FeatureNum; i++)
+    //	fout<<GetTetra(i,length)<<"\t\n"[i==(FeatureNum-1)];
+    string title, line, seq;
+    int dimension=(int)pow(4.0,length);
+    double* freqs=new double[dimension];
+    int cnt=0;
+    while(getline(fin, line))
+    {
+        if(line.size()>0 && line[0]=='>')
+        {
+            if(title=="")
+            {
+                title=line;
+                continue;
+            }
+            freqs=GetFreqs(seq,length);
+            //fout<<title<<'\n';
+            for (int i = 0; i < dimension; i++)
+                fout<<freqs[i]<<" \n"[i==(dimension-1)];
+            title=line;
+            //seq="";
+        }
+        else
+            seq=line;
+    }
+    freqs=GetFreqs(seq,length);
+    //fout<<title<<'\n';
+    for (int i = 0; i < dimension; i++)
+        fout<<freqs[i]<<" \n"[i==(dimension-1)];
+    delete []freqs;
+    fout.close();
+    fin.close();
 }

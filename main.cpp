@@ -31,7 +31,7 @@ using namespace std;
 
 
 int Init(int& MaxLen, int& MinLen, int& ClusterNum, int& SampleNum, string RawStr)//return maxlen
-//read source meta seq files, and write processed seqs to files, and get maxlen and sample number
+//read source meta seq files, and write processed seqs(RawStr.seq) to files, and get maxlen and sample number
 {
     //freopen("out.txt","w",stdout);
     ifstream InFile(RawStr);
@@ -255,19 +255,23 @@ int main()
 
 
     string RawFastaStr="E:/FourierTransformation/Data/transorder-5class-abundance-5k-454.f3639058.fna";
-    int MaxLen=0,MinLen=INT_MAX, SampleNum=0, ClusterNum=0;
+    int MaxLen=0,MinLen=INT_MAX, SampleNum=0, ClusterNum=5;
     Init(MaxLen, MinLen, ClusterNum, SampleNum, RawFastaStr);
     cout<<"MaxLen: "<<MaxLen<<endl;
     cout<<"MinLen: "<<MinLen<<endl;
     cout<<"SampleNum: "<<SampleNum<<endl;
     cout<<"ClusterNum: "<<ClusterNum<<endl;
 
-    double** RFTFeature=new double*[SampleNum+1];
+/*  double** RFTFeature=new double*[SampleNum+1];
     for(int i=0;i<=SampleNum;i++) RFTFeature[i]=new double[MinLen+1];
     RFT rft(MinLen);
     GetRFTFeature(rft, RFTFeature, RawFastaStr);
+*/
+    double** RFTFeature=new double*[SampleNum+1];
+    for(int i=0;i<=SampleNum;i++) RFTFeature[i]=new double[MaxLen+1];
 
-
+    RFT rft(MaxLen);
+    GetRFTFeature(rft, RFTFeature, RawFastaStr);
     //int SampleNum=50000, MaxLen=1227;;
 
     //ReadRFTFeature(RFTFeature, MinLen, SampleNum, RawFastaStr);
@@ -280,7 +284,7 @@ int main()
     kmeans.ShowResult(RawFastaStr+".KmeansRes");
 
 
-
+/*
     Skwic skwic;
     skwic.setDistMeasure(Skwic::CITYBLOCK);
     skwic.setData(RFTFeature, MaxLen, SampleNum, 1, 0.01);
@@ -289,10 +293,10 @@ int main()
 	int *cls = skwic.clustering(ClusterNum);
 	cout<<"Clustering Done!"<<endl<<"Saving Clustering Result.."<<endl;
 	string OutFileClusterResult="E:/FourierTransformation/Data/RFT_SKWIC_Result.txt";
-	skwic.writeClusterResult(cls, SampleNum, OutFileClusterResult);
+	skwic.writeClusterResult(cls, SampleNum, OutFileClusterResult);*/
 
 	for(int i=0;i<=SampleNum;i++) delete[] RFTFeature[i];
 	delete[] RFTFeature;
-	EvalPer(SampleNum, ClusterNum, RawFastaStr);
+	EvalPer(SampleNum, ClusterNum, RawFastaStr, RawFastaStr+"_KmeansRes");
 	return 0;
 }

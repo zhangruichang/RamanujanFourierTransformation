@@ -23,7 +23,7 @@ typedef unsigned long long ULL;
 
 
 
-void EvalPer(int SeqNum, int ClusterNum, string RawStr)
+void EvalPer(int SeqNum, int ClusterNum, string SeqFile, string ClusterFile)
 {
     //SeqNum=173028, ClusterNum=2;
     //int ClusterNum=10;
@@ -31,8 +31,8 @@ void EvalPer(int SeqNum, int ClusterNum, string RawStr)
     unordered_map<string, int> SpeciesTable;
     vector<vector<int> > SpeciesToCluster(ClusterNum, vector<int>(ClusterNum, 0));
 
-    ifstream FileSeq(RawStr+".seq"),
-            FileCluster(RawStr+".KmeansRes");
+    ifstream FileSeq(SeqFile),
+            FileCluster(ClusterFile);
     int SpeciesId=1, ClusterId;
     string Line;
     while(getline(FileSeq, Line))
@@ -63,5 +63,5 @@ void EvalPer(int SeqNum, int ClusterNum, string RawStr)
         sum+=maxe;
     }
     Precision=(double)sum/SeqNum;
-    cout<<"Sensitivity: "<<Sensitivity<<" Precision: "<<Precision<<endl;
+    cout<<"Sensitivity: "<<Sensitivity<<" Precision: "<<Precision<<" F1: "<<2*Sensitivity*Precision/(Sensitivity+Precision)<<endl;;
 }

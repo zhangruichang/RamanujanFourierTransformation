@@ -65,7 +65,7 @@ void RFT::GetRFourier(deque<bool> *BinV)//Equation 12 in paper
         }
     }
 }
-
+/*//brute force
 void RFT::GetPhi()//get Phi function of Phi[1...n]
 {
     for(int i=1;i<=Len;i++)
@@ -77,6 +77,40 @@ void RFT::GetPhi()//get Phi function of Phi[1...n]
         }
         Phi[i]=cnt;
     }
+}*/
+void RFT::GetPhi()//linear euler screen
+{
+    LL N=Len;
+    bool check[N+1];
+    LL prime[N+1];
+    memset(check, 0, sizeof check);
+    Phi[1]=1;
+    LL tot=0;
+    for(LL i=2;i<=N;i++)
+    {
+        if(!check[i])
+        {
+            prime[tot++]=i;
+            Phi[i]=i-1;
+        }
+        for(LL j=0;j<tot;j++)
+        {
+            if(i*prime[j]>N) break;
+            check[i*prime[j]]=1;
+            if(i%prime[j]==0)
+            {
+                Phi[i*prime[j]]=Phi[i]*prime[j];
+                break;
+            }
+            else
+                Phi[i*prime[j]]=Phi[i]*(prime[j]-1);
+        }
+    }
+    /*
+    for(int i=0;i<tot;i++) cout<<prime[i]<<" ";
+    cout<<endl;
+    for(int i=1;i<=N;i++) cout<<Phi[i]<<" ";
+    cout<<endl;*/
 }
 void RFT::GetRamaSum()//Equation 2 in the paper
 {

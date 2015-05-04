@@ -20,6 +20,7 @@
 
 #include "DFT.h"
 #include "complex.h"
+#include <iostream>
 using namespace std;
 #define M_PI 3.141592653
 /*
@@ -33,8 +34,8 @@ using namespace std;
 
 void DFT::del_all()
 {
-    delete input_data;
-    delete output_data;
+    if(input_data) delete input_data;
+    if(output_data) delete output_data;
 }
 
 DFT::DFT(int n)
@@ -75,7 +76,11 @@ complex<double>* DFT::array_input()
 {
     return input_data;
 }
-
+void DFT:: Show()
+{
+    for(int i=0;i<size;i++)
+        cout<<output_data[i].real()<<"+"<<output_data[i].imag()<<"i \n";
+}
 complex<double>* DFT::array_output()
 {
     return output_data;
@@ -86,10 +91,10 @@ void DFT::dft1(bool inverse)
     double pi2 = (inverse)?2.0 * M_PI:-2.0 * M_PI;
     double a,ca,sa;
     double invs = 1.0 / size;
-    for(unsigned int y = 0; y < size; y++)
+    for(int y = 0; y < size; y++)
     {
         output_data[y] = 0;
-        for(unsigned int x = 0; x < size; x++)
+        for(int x = 0; x < size; x++)
         {
             a = pi2 * y * x * invs;
             ca = cos(a);
